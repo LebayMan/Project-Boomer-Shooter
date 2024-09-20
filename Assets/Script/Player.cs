@@ -1,15 +1,21 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerMovement : MonoBehaviour
-{
-    public float moveSpeed = 5f;            // Movement speed
+public class Player : MonoBehaviour
+{   
+    
+    [Header("Ref")]
     public CharacterController controller;  // Reference to the CharacterController
-    public Transform cameraTransform;       // Reference to the player camera
-    public float mouseSensitivity = 100f;   // Mouse sensitivity for aiming
+    public Transform cameraTransform;
+    public Shooting shoot;
+    [Header("Player Speeds && Mouse Sens")]
+    public float moveSpeed = 5f;            // Movement speed
+    public float mouseSensitivity = 100f; 
+    [Header("Gravity && Jump")]  
     public float gravity = -9.81f;          // Gravity value
     public float jumpHeight = 2f;           // How high the player jumps
-    public float landingRecoil = 1f;        // How much recoil force is applied when landing
+    public float landingRecoil = 1f;  
+    
 
     private Vector2 movementInput;          // Store movement input from new Input System
     private Vector2 lookInput;              // Store mouse look input
@@ -18,7 +24,8 @@ public class PlayerMovement : MonoBehaviour
 
     private bool isGrounded;                // Check if player is on the ground
     private bool wasGrounded;               // Check if the player was grounded in the previous frame
-    private bool hasJumped;                 // Track if the player has jumped
+    private bool hasJumped;    
+    
 
     private void OnEnable()
     {
@@ -37,6 +44,9 @@ public class PlayerMovement : MonoBehaviour
         // Jump
         playerInput.Main.Jump.performed += OnJumpPerformed;
         playerInput.Main.Jump.Enable();
+
+        playerInput.Main.Shooting.performed += context => shoot.Shoot();
+        playerInput.Main.Shooting.Enable();
     }
 
     private void OnDisable()
@@ -45,6 +55,7 @@ public class PlayerMovement : MonoBehaviour
         playerInput.Main.Movement.Disable();
         playerInput.Main.Aim.Disable();
         playerInput.Main.Jump.Disable();
+        playerInput.Main.Shooting.Disable();
     }
 
     // Called when movement keys are pressed
