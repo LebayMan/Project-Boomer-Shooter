@@ -62,6 +62,15 @@ public partial class @Controller: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Reload"",
+                    ""type"": ""Button"",
+                    ""id"": ""49516b6c-f817-44f6-9468-67a07d366bc4"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -152,6 +161,17 @@ public partial class @Controller: IInputActionCollection2, IDisposable
                     ""action"": ""Shooting"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e658bcec-70a9-4b64-9a16-939c281deb27"",
+                    ""path"": ""<Keyboard>/#(R)"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Reload"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -164,6 +184,7 @@ public partial class @Controller: IInputActionCollection2, IDisposable
         m_Main_Aim = m_Main.FindAction("Aim", throwIfNotFound: true);
         m_Main_Jump = m_Main.FindAction("Jump", throwIfNotFound: true);
         m_Main_Shooting = m_Main.FindAction("Shooting", throwIfNotFound: true);
+        m_Main_Reload = m_Main.FindAction("Reload", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -229,6 +250,7 @@ public partial class @Controller: IInputActionCollection2, IDisposable
     private readonly InputAction m_Main_Aim;
     private readonly InputAction m_Main_Jump;
     private readonly InputAction m_Main_Shooting;
+    private readonly InputAction m_Main_Reload;
     public struct MainActions
     {
         private @Controller m_Wrapper;
@@ -237,6 +259,7 @@ public partial class @Controller: IInputActionCollection2, IDisposable
         public InputAction @Aim => m_Wrapper.m_Main_Aim;
         public InputAction @Jump => m_Wrapper.m_Main_Jump;
         public InputAction @Shooting => m_Wrapper.m_Main_Shooting;
+        public InputAction @Reload => m_Wrapper.m_Main_Reload;
         public InputActionMap Get() { return m_Wrapper.m_Main; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -258,6 +281,9 @@ public partial class @Controller: IInputActionCollection2, IDisposable
             @Shooting.started += instance.OnShooting;
             @Shooting.performed += instance.OnShooting;
             @Shooting.canceled += instance.OnShooting;
+            @Reload.started += instance.OnReload;
+            @Reload.performed += instance.OnReload;
+            @Reload.canceled += instance.OnReload;
         }
 
         private void UnregisterCallbacks(IMainActions instance)
@@ -274,6 +300,9 @@ public partial class @Controller: IInputActionCollection2, IDisposable
             @Shooting.started -= instance.OnShooting;
             @Shooting.performed -= instance.OnShooting;
             @Shooting.canceled -= instance.OnShooting;
+            @Reload.started -= instance.OnReload;
+            @Reload.performed -= instance.OnReload;
+            @Reload.canceled -= instance.OnReload;
         }
 
         public void RemoveCallbacks(IMainActions instance)
@@ -297,5 +326,6 @@ public partial class @Controller: IInputActionCollection2, IDisposable
         void OnAim(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnShooting(InputAction.CallbackContext context);
+        void OnReload(InputAction.CallbackContext context);
     }
 }

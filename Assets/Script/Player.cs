@@ -7,7 +7,6 @@ public class Player : MonoBehaviour
     [Header("Ref")]
     public CharacterController controller;  // Reference to the CharacterController
     public Transform cameraTransform;
-    public Shooting shoot;
     [Header("Player Speeds && Mouse Sens")]
     public float moveSpeed = 5f;            // Movement speed
     public float mouseSensitivity = 100f; 
@@ -15,7 +14,10 @@ public class Player : MonoBehaviour
     public float gravity = -9.81f;          // Gravity value
     public float jumpHeight = 2f;           // How high the player jumps
     public float landingRecoil = 1f;  
+    [Header("Guns List")]
+    public GameObject shotgunGameObject;
     
+    private GunManager gunManager;
 
     private Vector2 movementInput;          // Store movement input from new Input System
     private Vector2 lookInput;              // Store mouse look input
@@ -27,9 +29,22 @@ public class Player : MonoBehaviour
     private bool hasJumped;    
     
 
+    void Start()
+    {
+        gunManager = FindObjectOfType<GunManager>();
+        if (shotgunGameObject != null)
+        {
+            IGun shotgun = shotgunGameObject.GetComponent<IGun>();
+            if (shotgun != null)
+            {
+                gunManager.EquipGun(shotgun);
+            }
+        }
+    }
     private void OnEnable()
     {
         var playerInput = new Controller();  // Assuming PlayerInput is generated from Input Action Asset
+        gunManager = FindObjectOfType<GunManager>();
 
         // Movement
         playerInput.Main.Movement.performed += OnMovePerformed;
@@ -45,8 +60,11 @@ public class Player : MonoBehaviour
         playerInput.Main.Jump.performed += OnJumpPerformed;
         playerInput.Main.Jump.Enable();
 
-        playerInput.Main.Shooting.performed += context => shoot.Shoot();
+        playerInput.Main.Shooting.performed += context => gunManager.ShootGun();
         playerInput.Main.Shooting.Enable();
+
+        playerInput.Main.Reload.performed += context => gunManager.ReloadGun();
+        playerInput.Main.Reload.Enable();
     }
 
     private void OnDisable()
@@ -93,6 +111,11 @@ public class Player : MonoBehaviour
         }
     }
 
+
+    private void Reload()
+    {
+
+    }
     private void Update()
     {
         // Ground check - assumes the bottom of the character is slightly above the ground

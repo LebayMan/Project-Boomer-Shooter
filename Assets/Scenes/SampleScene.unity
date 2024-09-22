@@ -345,8 +345,10 @@ GameObject:
   - component: {fileID: 415442823}
   - component: {fileID: 415442825}
   - component: {fileID: 415442824}
+  - component: {fileID: 415442826}
+  - component: {fileID: 415442827}
   m_Layer: 5
-  m_Name: Gun
+  m_Name: Shotgun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -409,6 +411,48 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 415442822}
   m_CullTransparentMesh: 1
+--- !u!114 &415442826
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 415442822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a0b6160b8fda7c45b97908ce6a58652, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  shootFrom: {fileID: 963194228}
+  BulletImpact: {fileID: 4885858133016305015, guid: fdecc24ce7b3ddf469048def51c52bd0, type: 3}
+  impactOffset: 0.01
+  Ammo: 2
+  maxAmmo: 2
+  animator: {fileID: 415442827}
+--- !u!95 &415442827
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 415442822}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 5efc200e067dd854e861af60a514fc63, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &467175528
 GameObject:
   m_ObjectHideFlags: 0
@@ -534,12 +578,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controller: {fileID: 644391912}
   cameraTransform: {fileID: 963194228}
-  shoot: {fileID: 644391913}
   moveSpeed: 5
   mouseSensitivity: 50
   gravity: -17.6
   jumpHeight: 2
   landingRecoil: 0.2
+  shotgunGameObject: {fileID: 415442822}
 --- !u!143 &644391912
 CharacterController:
   m_ObjectHideFlags: 0
@@ -575,15 +619,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 644391909}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fabc4343abb666b48a3bf34d44be2804, type: 3}
+  m_Script: {fileID: 11500000, guid: 259e7fd3a92e3a04c957c228e823da8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  obstacleLayer:
-    serializedVersion: 2
-    m_Bits: 128
-  shootFrom: {fileID: 963194228}
-  BulletImpact: {fileID: 4885858133016305015, guid: fdecc24ce7b3ddf469048def51c52bd0, type: 3}
-  impactOffset: 0.01
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
