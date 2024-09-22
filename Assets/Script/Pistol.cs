@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Shotgun : MonoBehaviour, IGun
+public class Pistol : MonoBehaviour, IGun
 {
     [Header("Layer")]
     public LayerMask obstacleLayer;
@@ -16,8 +16,8 @@ public class Shotgun : MonoBehaviour, IGun
     public float impactOffset = 0.01f;
     
     [Header("Ammo")]
-    public float Ammo = 6;
-    public float maxAmmo = 6;
+    public float Ammo = 8;
+    public float maxAmmo = 8;
 
     [Header("Animation")]
     public Animator animator; // Reference to the Animator component

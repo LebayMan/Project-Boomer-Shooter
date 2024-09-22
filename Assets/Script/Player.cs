@@ -29,43 +29,38 @@ public class Player : MonoBehaviour
     private bool hasJumped;    
     
 
-    void Start()
-    {
-        gunManager = FindObjectOfType<GunManager>();
-        if (shotgunGameObject != null)
-        {
-            IGun shotgun = shotgunGameObject.GetComponent<IGun>();
-            if (shotgun != null)
-            {
-                gunManager.EquipGun(shotgun);
-            }
-        }
-    }
-    private void OnEnable()
-    {
-        var playerInput = new Controller();  // Assuming PlayerInput is generated from Input Action Asset
-        gunManager = FindObjectOfType<GunManager>();
+private void OnEnable()
+{
+    var playerInput = new Controller();  // Assuming PlayerInput is generated from Input Action Asset
+    gunManager = FindObjectOfType<GunManager>();
 
-        // Movement
-        playerInput.Main.Movement.performed += OnMovePerformed;
-        playerInput.Main.Movement.canceled += OnMoveCanceled;
-        playerInput.Main.Movement.Enable();
+    // Movement
+    playerInput.Main.Movement.performed += OnMovePerformed;
+    playerInput.Main.Movement.canceled += OnMoveCanceled;
+    playerInput.Main.Movement.Enable();
 
-        // Mouse look
-        playerInput.Main.Aim.performed += OnLookPerformed;
-        playerInput.Main.Aim.canceled += OnLookCanceled;
-        playerInput.Main.Aim.Enable();
+    // Mouse look
+    playerInput.Main.Aim.performed += OnLookPerformed;
+    playerInput.Main.Aim.canceled += OnLookCanceled;
+    playerInput.Main.Aim.Enable();
 
-        // Jump
-        playerInput.Main.Jump.performed += OnJumpPerformed;
-        playerInput.Main.Jump.Enable();
+    // Jump
+    playerInput.Main.Jump.performed += OnJumpPerformed;
+    playerInput.Main.Jump.Enable();
 
-        playerInput.Main.Shooting.performed += context => gunManager.ShootGun();
-        playerInput.Main.Shooting.Enable();
+    // Shooting
+    playerInput.Main.Shooting.performed += context => gunManager.ShootGun();
+    playerInput.Main.Shooting.Enable();
 
-        playerInput.Main.Reload.performed += context => gunManager.ReloadGun();
-        playerInput.Main.Reload.Enable();
-    }
+    // Reload
+    playerInput.Main.Reload.performed += context => gunManager.ReloadGun();
+    playerInput.Main.Reload.Enable();
+
+    // Weapon switching
+    playerInput.Main.SwitchWeapon.performed += context => FindObjectOfType<WeaponSwitcher>().OnSwitchWeapon(context);
+    playerInput.Main.SwitchWeapon.Enable();
+}
+
 
     private void OnDisable()
     {
@@ -74,6 +69,7 @@ public class Player : MonoBehaviour
         playerInput.Main.Aim.Disable();
         playerInput.Main.Jump.Disable();
         playerInput.Main.Shooting.Disable();
+        playerInput.Main.SwitchWeapon.Disable();
     }
 
     // Called when movement keys are pressed
