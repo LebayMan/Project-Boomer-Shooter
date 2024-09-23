@@ -6,7 +6,7 @@ public class WeaponSwitcher : MonoBehaviour
     public GameObject[] weapons; // Array to hold the weapon GameObjects
     private int currentWeaponIndex = 0;
     private GunManager gunManager;
-
+    private IGun currentGun;
     private void Start()
     {
         gunManager = FindObjectOfType<GunManager>();
@@ -14,23 +14,37 @@ public class WeaponSwitcher : MonoBehaviour
         ActivateWeapon(currentWeaponIndex);
     }
 
-    public void OnSwitchWeapon(InputAction.CallbackContext context)
+public void OnSwitchWeapon(InputAction.CallbackContext context)
+{
+    if (currentGun == null)
     {
-        if (context.performed)
+        Debug.LogWarning("No gun equipped yet!");
+        return;
+    }
+
+    // Check if the current gun is reloading
+    if (currentGun.IsReloading())
+    {
+        Debug.Log("Cannot switch weapons while reloading.");
+        return;
+    }
+
+    if (context.performed)
+    {
+        Vector2 scrollValue = context.ReadValue<Vector2>();
+        float scrollDirection = scrollValue.y;
+
+        if (scrollDirection > 0)
         {
-            Vector2 scrollValue = context.ReadValue<Vector2>();
-            float scrollDirection = scrollValue.y;
-            if (scrollDirection > 0)
-            {
-                Debug.Log("MAWFNAWF");
-                NextWeapon();
-            }
-            else if (scrollDirection < 0)
-            {
-                PreviousWeapon();
-            }
+            NextWeapon();
+        }
+        else if (scrollDirection < 0)
+        {
+            PreviousWeapon();
         }
     }
+}
+
 
     private void NextWeapon()
     {
@@ -56,10 +70,11 @@ public class WeaponSwitcher : MonoBehaviour
         }
 
         // Update the equipped gun in the GunManager
-        IGun equippedGun = weapons[index].GetComponent<IGun>();
-        if (gunManager != null && equippedGun != null)
+        currentGun = weapons[index].GetComponent<IGun>(); // Assign currentGun here
+        if (gunManager != null && currentGun != null)
         {
-            gunManager.EquipGun(equippedGun);
+            gunManager.EquipGun(currentGun);
         }
     }
+
 }

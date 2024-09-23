@@ -14,8 +14,7 @@ public class Player : MonoBehaviour
     public float gravity = -9.81f;          // Gravity value
     public float jumpHeight = 2f;           // How high the player jumps
     public float landingRecoil = 1f;  
-    [Header("Guns List")]
-    public GameObject shotgunGameObject;
+
     
     private GunManager gunManager;
 

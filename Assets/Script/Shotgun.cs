@@ -88,4 +88,9 @@ private void FixedUpdate()
     {
         return Ammo;
     }
+    public bool IsReloading()
+    {
+        return isReloading;
+    }
+
 }

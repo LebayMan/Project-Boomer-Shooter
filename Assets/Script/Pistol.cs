@@ -21,7 +21,7 @@ public class Pistol : MonoBehaviour, IGun
 
     [Header("Animation")]
     public Animator animator; // Reference to the Animator component
-    private bool isReloading = false; // Flag to track if the gun is reloading
+    public bool isReloading = false; // Flag to track if the gun is reloading
 
     public void Shoot()
     {
@@ -88,4 +88,10 @@ private void FixedUpdate()
     {
         return Ammo;
     }
+
+    public bool IsReloading()
+    {
+        return isReloading;
+    }
+
 }
