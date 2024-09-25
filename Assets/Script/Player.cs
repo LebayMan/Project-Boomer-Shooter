@@ -7,6 +7,8 @@ public class Player : MonoBehaviour
     [Header("Ref")]
     public CharacterController controller;  // Reference to the CharacterController
     public Transform cameraTransform;
+    public static Player instance;
+
     [Header("Player Speeds && Mouse Sens")]
     public float moveSpeed = 5f;            // Movement speed
     public float mouseSensitivity = 100f; 
@@ -16,6 +18,7 @@ public class Player : MonoBehaviour
     public float landingRecoil = 1f;  
 
     
+
     private GunManager gunManager;
 
     private Vector2 movementInput;          // Store movement input from new Input System
@@ -32,6 +35,8 @@ private void OnEnable()
 {
     var playerInput = new Controller();  // Assuming PlayerInput is generated from Input Action Asset
     gunManager = FindObjectOfType<GunManager>();
+
+    instance = this;
 
     // Movement
     playerInput.Main.Movement.performed += OnMovePerformed;
@@ -107,10 +112,7 @@ private void OnEnable()
     }
 
 
-    private void Reload()
-    {
 
-    }
     private void Update()
     {
         // Ground check - assumes the bottom of the character is slightly above the ground

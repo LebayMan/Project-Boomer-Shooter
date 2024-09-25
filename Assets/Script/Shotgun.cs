@@ -7,6 +7,7 @@ public class Shotgun : MonoBehaviour, IGun
 {
     [Header("Layer")]
     public LayerMask obstacleLayer;
+    public LayerMask EnemyLayer;
 
     [Header("Shooting Reference")]
     public Transform shootFrom;
@@ -16,42 +17,57 @@ public class Shotgun : MonoBehaviour, IGun
     public float impactOffset = 0.01f;
     
     [Header("Ammo")]
-    public float Ammo = 6;
+    public float Ammo = 6; 
     public float maxAmmo = 6;
 
     [Header("Animation")]
     public Animator animator; // Reference to the Animator component
     private bool isReloading = false; // Flag to track if the gun is reloading
 
-    public void Shoot()
-    {
-        if (isReloading)
+public void Shoot()
+{
+    if (isReloading)
     {
         Debug.Log("Cannot shoot while reloading.");
         return;
     }
-        shootFrom = Camera.main.transform;
-        if (Ammo > 0)
+
+    shootFrom = Camera.main.transform;
+
+    if (Ammo > 0)
+    {
+        Ray ray = new Ray(shootFrom.position, shootFrom.forward);
+        RaycastHit hit;
+        
+        // Check for obstacles first
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, obstacleLayer))
         {
-            Ray ray = new Ray(shootFrom.position, shootFrom.forward);
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity, obstacleLayer))
+            Debug.Log("Hit object: " + hit.collider.name);
+            Vector3 impactPosition = hit.point + hit.normal * impactOffset;
+            Instantiate(BulletImpact, impactPosition, Quaternion.LookRotation(hit.normal));
+        }
+        // Check for enemies
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, EnemyLayer))
+        {
+            Enemy enemyScript = hit.collider.GetComponent<Enemy>();
+            if (enemyScript != null)
             {
-                Debug.Log("Hit object: " + hit.collider.name);
-                Vector3 impactPosition = hit.point + hit.normal * impactOffset;
-                Instantiate(BulletImpact, impactPosition, Quaternion.LookRotation(hit.normal));
-                Ammo--;
-            }
-            else
-            {
-            Ammo--;
+                enemyScript.Hit(50);
             }
         }
-        else
+
+        // Ensure ammo doesn't go below zero
+        if (Ammo < 0)
         {
-            Debug.Log("Out of Ammo!");
+            Ammo = 0;
         }
+        Ammo-= 1;
     }
+    else
+    {
+        Debug.Log("Out of Ammo!");
+    }
+}
 
 public void Reload()
 {
@@ -66,12 +82,19 @@ public void Reload()
     }
 }
 
+
 private void FixedUpdate()
 {
     if (Ammo == 0 && !isReloading)
     {
         Reload();
         isReloading = true; // Set the flag to true when reloading starts
+    }
+
+    // Ensure ammo doesn't go below zero
+    if (Ammo < 0)
+    {
+        Ammo = 0;
     }
 }
 
