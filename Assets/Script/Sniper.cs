@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Sniper : MonoBehaviour, IGun
 {
@@ -25,8 +26,13 @@ public class Sniper : MonoBehaviour, IGun
     public float ammoInsertDelay = 0.5f; // Delay between each ammo insertion
 
     [Header("Animation")]
-    public Animator animator; // Reference to the Animator component
-    private bool isReloading = false; // Flag to track if the gun is reloading
+    public Animator animator;
+    [Header("Reference")]
+    public GameObject scope;
+    public Image spriteRenderer;
+    private bool isReloading = false;
+    public bool isScopeing = false;
+
 
 public void Shoot()
 {
@@ -119,13 +125,9 @@ private IEnumerator ReloadCoroutine()
         {
             yield return null;
         }
-
-        // Increment Ammo after the animation has completed
-        Ammo += 1;
-
-        // Return to the reload phase with no ammo (phase 2)
         animator.SetTrigger("ReloadStart");
         yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
+        Ammo += 1;
     }
 
     // Exit reload phase
@@ -143,6 +145,28 @@ private IEnumerator ReloadCoroutine()
     isReloading = false;
     }
 }
+    public void Scope()
+    {
+        
+        if(!isScopeing && !isReloading)
+        {
+            scope.gameObject.SetActive(true);
+            isScopeing = true;
+            if (spriteRenderer != null)
+            {
+                spriteRenderer.enabled = false; // Enable the scope image
+            }
+        }
+        else if(isScopeing && !isReloading)
+        {
+            scope.gameObject.SetActive(false);
+            isScopeing = false;
+            if (spriteRenderer != null)
+            {
+                spriteRenderer.enabled = true; // Enable the scope image
+            }
+        }
+    }
 
 
     public float GetAmmo()

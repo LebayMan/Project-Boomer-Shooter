@@ -115,5 +115,8 @@ private void FixedUpdate()
     {
         return isReloading;
     }
-
+    public void Scope()
+    {
+        Debug.Log("NO LOL");
+    }
 }

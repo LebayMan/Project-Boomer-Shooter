@@ -63,6 +63,10 @@ private void OnEnable()
     // Weapon switching
     playerInput.Main.SwitchWeapon.performed += context => FindObjectOfType<WeaponSwitcher>().OnSwitchWeapon(context);
     playerInput.Main.SwitchWeapon.Enable();
+
+    playerInput.Main.Scope.performed += context => gunManager.Scope();
+    playerInput.Main.Scope.Enable();
+
 }
 
 
@@ -74,6 +78,7 @@ private void OnEnable()
         playerInput.Main.Jump.Disable();
         playerInput.Main.Shooting.Disable();
         playerInput.Main.SwitchWeapon.Disable();
+        playerInput.Main.Scope.Disable();
     }
 
     // Called when movement keys are pressed

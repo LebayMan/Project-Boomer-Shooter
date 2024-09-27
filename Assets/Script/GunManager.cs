@@ -32,5 +32,13 @@ public class GunManager : MonoBehaviour
     {
         return currentGun != null ? currentGun.GetAmmo() : 0;
     }
+
+    public void Scope()
+    {
+        if (currentGun != null)
+        {
+            currentGun.Scope();
+        }
+    }
 }
 

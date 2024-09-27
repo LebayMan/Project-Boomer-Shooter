@@ -80,6 +80,15 @@ public partial class @Controller: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Scope"",
+                    ""type"": ""Button"",
+                    ""id"": ""877c1ee7-a5c7-4186-becb-cac57baddbca"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -192,6 +201,17 @@ public partial class @Controller: IInputActionCollection2, IDisposable
                     ""action"": ""SwitchWeapon"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a77454ac-1af1-434b-a3da-88ba12ca593a"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Scope"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -206,6 +226,7 @@ public partial class @Controller: IInputActionCollection2, IDisposable
         m_Main_Shooting = m_Main.FindAction("Shooting", throwIfNotFound: true);
         m_Main_Reload = m_Main.FindAction("Reload", throwIfNotFound: true);
         m_Main_SwitchWeapon = m_Main.FindAction("SwitchWeapon", throwIfNotFound: true);
+        m_Main_Scope = m_Main.FindAction("Scope", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -273,6 +294,7 @@ public partial class @Controller: IInputActionCollection2, IDisposable
     private readonly InputAction m_Main_Shooting;
     private readonly InputAction m_Main_Reload;
     private readonly InputAction m_Main_SwitchWeapon;
+    private readonly InputAction m_Main_Scope;
     public struct MainActions
     {
         private @Controller m_Wrapper;
@@ -283,6 +305,7 @@ public partial class @Controller: IInputActionCollection2, IDisposable
         public InputAction @Shooting => m_Wrapper.m_Main_Shooting;
         public InputAction @Reload => m_Wrapper.m_Main_Reload;
         public InputAction @SwitchWeapon => m_Wrapper.m_Main_SwitchWeapon;
+        public InputAction @Scope => m_Wrapper.m_Main_Scope;
         public InputActionMap Get() { return m_Wrapper.m_Main; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -310,6 +333,9 @@ public partial class @Controller: IInputActionCollection2, IDisposable
             @SwitchWeapon.started += instance.OnSwitchWeapon;
             @SwitchWeapon.performed += instance.OnSwitchWeapon;
             @SwitchWeapon.canceled += instance.OnSwitchWeapon;
+            @Scope.started += instance.OnScope;
+            @Scope.performed += instance.OnScope;
+            @Scope.canceled += instance.OnScope;
         }
 
         private void UnregisterCallbacks(IMainActions instance)
@@ -332,6 +358,9 @@ public partial class @Controller: IInputActionCollection2, IDisposable
             @SwitchWeapon.started -= instance.OnSwitchWeapon;
             @SwitchWeapon.performed -= instance.OnSwitchWeapon;
             @SwitchWeapon.canceled -= instance.OnSwitchWeapon;
+            @Scope.started -= instance.OnScope;
+            @Scope.performed -= instance.OnScope;
+            @Scope.canceled -= instance.OnScope;
         }
 
         public void RemoveCallbacks(IMainActions instance)
@@ -357,5 +386,6 @@ public partial class @Controller: IInputActionCollection2, IDisposable
         void OnShooting(InputAction.CallbackContext context);
         void OnReload(InputAction.CallbackContext context);
         void OnSwitchWeapon(InputAction.CallbackContext context);
+        void OnScope(InputAction.CallbackContext context);
     }
 }
