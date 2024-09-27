@@ -6,5 +6,6 @@ public interface IGun
     void Reload(); // Add a Reload method here
     float GetAmmo(); // Optional: To access current ammo from other scripts
     bool IsReloading();
+    bool isScopeing1();
     void Scope();
 }

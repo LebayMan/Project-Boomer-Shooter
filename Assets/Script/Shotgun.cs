@@ -119,4 +119,9 @@ private void FixedUpdate()
     {
         Debug.Log("NO LOL");
     }
+        public bool isScopeing1()
+    {
+        bool awdaw = false;
+        return  awdaw;
+    }
 }

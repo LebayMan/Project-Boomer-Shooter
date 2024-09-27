@@ -40,5 +40,10 @@ public class GunManager : MonoBehaviour
             currentGun.Scope();
         }
     }
+    public bool scopbool()
+    {
+        return currentGun.isScopeing1();
+    }
+
 }
 

@@ -12,6 +12,8 @@ public class Player : MonoBehaviour
     [Header("Player Speeds && Mouse Sens")]
     public float moveSpeed = 5f;            // Movement speed
     public float mouseSensitivity = 100f; 
+    public float mouseSensitivityScope = 60f; 
+    public float mouseSensitivityNormal = 60f; 
     [Header("Gravity && Jump")]  
     public float gravity = -9.81f;          // Gravity value
     public float jumpHeight = 2f;           // How high the player jumps
@@ -120,7 +122,15 @@ private void OnEnable()
 
     private void Update()
     {
-        // Ground check - assumes the bottom of the character is slightly above the ground
+        if(gunManager.scopbool())
+        {
+            mouseSensitivity = mouseSensitivityScope;
+        }
+        else if(!gunManager.scopbool())
+        {
+            mouseSensitivity = mouseSensitivityNormal;
+        }
+
         wasGrounded = isGrounded;
         isGrounded = controller.isGrounded;
 

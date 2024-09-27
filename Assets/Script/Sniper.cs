@@ -83,11 +83,7 @@ public void Reload()
 {
     if (Ammo < maxAmmo && !isReloading)
     {
-        isReloading = true; // Set reloading flag to true
-        if (animator != null)
-        {
-            animator.SetTrigger("Reload"); // Trigger the reload animation
-        }
+        isReloading = true; 
         StartCoroutine(ReloadCoroutine());
     }
 }
@@ -98,10 +94,8 @@ private void FixedUpdate()
     if (Ammo == 0 && !isReloading)
     {
         Reload();
-        isReloading = true; // Set the flag to true when reloading starts
+        isReloading = true; 
     }
-
-    // Ensure ammo doesn't go below zero
     if (Ammo < 0)
     {
         Ammo = 0;
@@ -112,20 +106,16 @@ private IEnumerator ReloadCoroutine()
 {
     while (Ammo < maxAmmo)
     {
-        Debug.Log("Inserting ammo...");
-
-        // Play the animation where the ammo is being put into the gun (phase 3)
-        animator.SetTrigger("ReloadInsert");
-
-        // Wait for the animation to complete before adding ammo
+        animator.Play("Sniper", 0, 0f);
         yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
-
-        // Check if the animation is finished before proceeding
+        Debug.Log("Inserting ammo...");
+        animator.Play("Sniper Reload", 0, 0f);
+        yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
         while (animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1f)
         {
             yield return null;
         }
-        animator.SetTrigger("ReloadStart");
+        animator.Play("Sniper", 0, 0f);
         yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
         Ammo += 1;
     }
@@ -177,5 +167,8 @@ private IEnumerator ReloadCoroutine()
     {
         return isReloading;
     }
-
+    public bool isScopeing1()
+    {
+        return isScopeing;
+    }
 }
