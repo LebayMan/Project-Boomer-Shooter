@@ -6,6 +6,7 @@ public class AttackState : BaseState
 {
     private float moveTimer;
     private float losePlayerTimer;
+    private float shotTimer;
     public override void Enter()
     {
         
@@ -14,6 +15,26 @@ public class AttackState : BaseState
     {
 
     }
+public void Shoot()
+{
+    Debug.Log("SHOOT");
+    Transform gunbarrel = enemy.gunBarrel;
+
+    // Instantiate the bullet
+    GameObject bullet = GameObject.Instantiate(Resources.Load("Prefabs/Bullet") as GameObject, gunbarrel.position, enemy.transform.rotation);
+
+    // Adjust the bullet's rotation to be rotated 90 degrees
+    bullet.transform.rotation = Quaternion.Euler(bullet.transform.eulerAngles.x + 90, bullet.transform.eulerAngles.y, bullet.transform.eulerAngles.z);
+
+    // Calculate the shooting direction
+    Vector3 shootDirection = (enemy.Player.transform.position - gunbarrel.transform.position).normalized;
+    
+    // Apply velocity to the bullet with a slight random deviation
+    bullet.GetComponent<Rigidbody>().velocity = Quaternion.AngleAxis(Random.Range(-3f, 3f), Vector3.up) * shootDirection * 40;
+
+    shotTimer = 0;
+}
+
 
     public override void Perform()
     {
@@ -21,9 +42,17 @@ public class AttackState : BaseState
         {
             losePlayerTimer = 0;
             moveTimer += Time.deltaTime;
+            shotTimer += Time.deltaTime;
+            enemy.transform.LookAt(enemy.Player.transform);
+            if(shotTimer > enemy.fireRate)
+            {
+                Debug.Log("SHOOT1");
+                Shoot();
+            }
             if(moveTimer > Random.Range(3,7))
             {
                 enemy.Agent.SetDestination(enemy.transform.position * (Random.insideUnitCircle * 5));
+
                 moveTimer = 0;
                 
             }

@@ -13,6 +13,7 @@ public class Enemy : MonoBehaviour
     public NavMeshAgent Agent { get => agent;}
     public NavMeshAgent agent;
     
+    public  GameObject Player { get => player;}
     [Header("Explosion Settings")]
     public Vector3 explosionOffset;
     private float nextPlayTime = 0f;
@@ -24,9 +25,14 @@ public class Enemy : MonoBehaviour
     private string currentState;
     public Path path;
     private GameObject player;
+    [Header("Sight Value")]
     public float sightDistance = 20f;
     public float fieldofview = 85f;
     public float eyeHeight;
+    [Header ("Weapon Values")]
+    public Transform gunBarrel;
+    [Range(0.1f,10f)]
+    public float fireRate;
     
 
     private void Start()
