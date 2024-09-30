@@ -89,6 +89,15 @@ public partial class @Controller: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Sprint"",
+                    ""type"": ""Button"",
+                    ""id"": ""1e996e52-4f1a-48bd-b031-21a246386271"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -212,6 +221,17 @@ public partial class @Controller: IInputActionCollection2, IDisposable
                     ""action"": ""Scope"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f800f833-44a5-4429-8343-70f46b321ad6"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Sprint"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -227,6 +247,7 @@ public partial class @Controller: IInputActionCollection2, IDisposable
         m_Main_Reload = m_Main.FindAction("Reload", throwIfNotFound: true);
         m_Main_SwitchWeapon = m_Main.FindAction("SwitchWeapon", throwIfNotFound: true);
         m_Main_Scope = m_Main.FindAction("Scope", throwIfNotFound: true);
+        m_Main_Sprint = m_Main.FindAction("Sprint", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -295,6 +316,7 @@ public partial class @Controller: IInputActionCollection2, IDisposable
     private readonly InputAction m_Main_Reload;
     private readonly InputAction m_Main_SwitchWeapon;
     private readonly InputAction m_Main_Scope;
+    private readonly InputAction m_Main_Sprint;
     public struct MainActions
     {
         private @Controller m_Wrapper;
@@ -306,6 +328,7 @@ public partial class @Controller: IInputActionCollection2, IDisposable
         public InputAction @Reload => m_Wrapper.m_Main_Reload;
         public InputAction @SwitchWeapon => m_Wrapper.m_Main_SwitchWeapon;
         public InputAction @Scope => m_Wrapper.m_Main_Scope;
+        public InputAction @Sprint => m_Wrapper.m_Main_Sprint;
         public InputActionMap Get() { return m_Wrapper.m_Main; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -336,6 +359,9 @@ public partial class @Controller: IInputActionCollection2, IDisposable
             @Scope.started += instance.OnScope;
             @Scope.performed += instance.OnScope;
             @Scope.canceled += instance.OnScope;
+            @Sprint.started += instance.OnSprint;
+            @Sprint.performed += instance.OnSprint;
+            @Sprint.canceled += instance.OnSprint;
         }
 
         private void UnregisterCallbacks(IMainActions instance)
@@ -361,6 +387,9 @@ public partial class @Controller: IInputActionCollection2, IDisposable
             @Scope.started -= instance.OnScope;
             @Scope.performed -= instance.OnScope;
             @Scope.canceled -= instance.OnScope;
+            @Sprint.started -= instance.OnSprint;
+            @Sprint.performed -= instance.OnSprint;
+            @Sprint.canceled -= instance.OnSprint;
         }
 
         public void RemoveCallbacks(IMainActions instance)
@@ -387,5 +416,6 @@ public partial class @Controller: IInputActionCollection2, IDisposable
         void OnReload(InputAction.CallbackContext context);
         void OnSwitchWeapon(InputAction.CallbackContext context);
         void OnScope(InputAction.CallbackContext context);
+        void OnSprint(InputAction.CallbackContext context);
     }
 }

@@ -10,7 +10,9 @@ public class Player : MonoBehaviour
     public static Player instance;
 
     [Header("Player Speeds && Mouse Sens")]
-    public float moveSpeed = 5f;            // Movement speed
+    public float moveSpeed = 5f;            // Normal movement speed
+    public float sprintSpeed = 10f;         // Sprint speed
+    public float currentSpeed;              // Current movement speed
     public float mouseSensitivity = 100f; 
     public float mouseSensitivityScope = 60f; 
     public float mouseSensitivityNormal = 60f; 
@@ -31,6 +33,7 @@ public class Player : MonoBehaviour
     private bool isGrounded;                // Check if player is on the ground
     private bool wasGrounded;               // Check if the player was grounded in the previous frame
     private bool hasJumped;    
+    private bool isSprinting = false; 
     
 
 private void OnEnable()
@@ -69,6 +72,13 @@ private void OnEnable()
     playerInput.Main.Scope.performed += context => gunManager.Scope();
     playerInput.Main.Scope.Enable();
 
+            // Sprint
+        playerInput.Main.Sprint.performed += OnSprintPerformed;
+        playerInput.Main.Sprint.canceled += OnSprintCanceled;
+        playerInput.Main.Sprint.Enable();
+
+        currentSpeed = moveSpeed;
+
 }
 
 
@@ -81,6 +91,7 @@ private void OnEnable()
         playerInput.Main.Shooting.Disable();
         playerInput.Main.SwitchWeapon.Disable();
         playerInput.Main.Scope.Disable();
+        playerInput.Main.Sprint.Disable();
     }
 
     // Called when movement keys are pressed
@@ -117,6 +128,17 @@ private void OnEnable()
             hasJumped = true; // Mark that the player has jumped
         }
     }
+        private void OnSprintPerformed(InputAction.CallbackContext context)
+    {
+        isSprinting = true;
+        currentSpeed = sprintSpeed; // Increase speed when sprinting
+    }
+
+    private void OnSprintCanceled(InputAction.CallbackContext context)
+    {
+        isSprinting = false;
+        currentSpeed = moveSpeed; // Reset speed when not sprinting
+    }
 
 
 
@@ -134,27 +156,23 @@ private void OnEnable()
         wasGrounded = isGrounded;
         isGrounded = controller.isGrounded;
 
-        // If the player was not grounded in the previous frame but is grounded now, apply recoil only if they jumped
         if (isGrounded && !wasGrounded && hasJumped)
         {
             ApplyLandingRecoil();
-            hasJumped = false; // Reset jump state after applying recoil
+            hasJumped = false;
         }
 
         if (isGrounded && velocity.y < 0)
         {
-            velocity.y = -2f; // Ensures the player stays grounded
+            velocity.y = -2f;
         }
 
-        // Handle player movement
         Vector3 moveDirection = transform.right * movementInput.x + transform.forward * movementInput.y;
-        controller.Move(moveDirection * moveSpeed * Time.deltaTime);
+        controller.Move(moveDirection * currentSpeed * Time.deltaTime);
 
-        // Apply gravity
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
 
-        // Handle mouse look/aim
         HandleMouseLook();
     }
 
