@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
+using TMPro;
 
 public class Player : MonoBehaviour
 {   
@@ -8,6 +10,8 @@ public class Player : MonoBehaviour
     public CharacterController controller;  // Reference to the CharacterController
     public Transform cameraTransform;
     public static Player instance;
+    [SerializeField] private TextMeshProUGUI maxAmmo; // For displaying max ammo
+    [SerializeField] private TextMeshProUGUI Ammo;
 
     [Header("Player Speeds && Mouse Sens")]
     public float moveSpeed = 5f;            // Normal movement speed
@@ -25,6 +29,7 @@ public class Player : MonoBehaviour
     public float crouchHeight = 1f;         // CharacterController height when crouched
     public float normalHeight = 2f;         // CharacterController height when standing
     public bool isCrouching = false;  
+    
     public Transform headPosition;          // Reference to the head position
     public float headCheckRadius = 0.3f;    // Radius for head collision check
     public LayerMask headCollisionLayer;       // Is player currently crouching
@@ -184,6 +189,9 @@ private void OnEnable()
 
     private void Update()
     {
+        maxAmmo.text = gunManager.GetCurrentMaxAmmo().ToString();
+        Ammo.text = gunManager.GetCurrentAmmo().ToString();
+
         if(gunManager.scopbool())
         {
             mouseSensitivity = mouseSensitivityScope;

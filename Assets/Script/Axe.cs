@@ -72,6 +72,10 @@ public class Axe : MonoBehaviour, IGun
     {
         Debug.Log("Reloading not applicable for axe."); // Not applicable for melee weapon
     }
+    public void OnEnable()
+    {
+        
+    }
 
     private void FixedUpdate()
     {
@@ -81,6 +85,10 @@ public class Axe : MonoBehaviour, IGun
     public float GetAmmo()
     {
         return 0; // No ammo for the axe
+    }
+    public float GetMaxAmmo()
+    {
+        return 0;
     }
 
     public bool IsReloading()

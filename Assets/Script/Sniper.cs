@@ -163,6 +163,10 @@ private IEnumerator ReloadCoroutine()
     {
         return Ammo;
     }
+        public float GetMaxAmmo()
+    {
+        return maxAmmo;
+    }
     public bool IsReloading()
     {
         return isReloading;

@@ -99,6 +99,10 @@ private void FixedUpdate()
     {
         return Ammo;
     }
+        public float GetMaxAmmo()
+    {
+        return maxAmmo;
+    }
 
     public bool IsReloading()
     {

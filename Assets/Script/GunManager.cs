@@ -32,6 +32,11 @@ public class GunManager : MonoBehaviour
     {
         return currentGun != null ? currentGun.GetAmmo() : 0;
     }
+    
+    public float GetCurrentMaxAmmo()
+    {
+        return currentGun != null ? currentGun.GetMaxAmmo() : 0;
+    }
 
     public void Scope()
     {
