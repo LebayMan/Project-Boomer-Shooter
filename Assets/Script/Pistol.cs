@@ -7,6 +7,7 @@ public class Pistol : MonoBehaviour, IGun
 {
     [Header("Layer")]
     public LayerMask obstacleLayer;
+    public LayerMask EnemyLayer;
 
     [Header("Shooting Reference")]
     public Transform shootFrom;
@@ -14,6 +15,8 @@ public class Pistol : MonoBehaviour, IGun
 
     [Header("Impact Offset")]
     public float impactOffset = 0.01f;
+    [Header("Damage")]
+    public float Damage_Point = 10;
     
     [Header("Ammo")]
     public float Ammo = 8;
@@ -41,6 +44,14 @@ public class Pistol : MonoBehaviour, IGun
                 Vector3 impactPosition = hit.point + hit.normal * impactOffset;
                 Instantiate(BulletImpact, impactPosition, Quaternion.LookRotation(hit.normal));
                 Ammo--;
+            }
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, EnemyLayer))
+            {
+            Enemy enemyScript = hit.collider.GetComponent<Enemy>();
+            if (enemyScript != null)
+            {
+                enemyScript.Hit(Damage_Point);
+            }
             }
             else
             {

@@ -9,12 +9,17 @@ public class Shotgun : MonoBehaviour, IGun
     public LayerMask obstacleLayer;
     public LayerMask EnemyLayer;
 
+
     [Header("Shooting Reference")]
     public Transform shootFrom;
     public GameObject BulletImpact;
 
+    
+
     [Header("Impact Offset")]
     public float impactOffset = 0.01f;
+    [Header("Damage")]
+    public float Damage_Point = 10;
     
     [Header("Ammo")]
     public float Ammo = 6; 
@@ -38,7 +43,6 @@ public void Shoot()
     {
         Ray ray = new Ray(shootFrom.position, shootFrom.forward);
         RaycastHit hit;
-        
         // Check for obstacles first
         if (Physics.Raycast(ray, out hit, Mathf.Infinity, obstacleLayer))
         {
@@ -52,7 +56,7 @@ public void Shoot()
             Enemy enemyScript = hit.collider.GetComponent<Enemy>();
             if (enemyScript != null)
             {
-                enemyScript.Hit(50);
+                enemyScript.Hit(Damage_Point);
             }
         }
 
@@ -62,6 +66,7 @@ public void Shoot()
             Ammo = 0;
         }
         Ammo-= 1;
+        
     }
     else
     {

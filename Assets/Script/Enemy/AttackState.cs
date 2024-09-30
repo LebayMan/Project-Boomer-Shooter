@@ -7,6 +7,7 @@ public class AttackState : BaseState
     private float moveTimer;
     private float losePlayerTimer;
     private float shotTimer;
+    
     public override void Enter()
     {
         
@@ -28,13 +29,16 @@ public void Shoot()
 
     // Calculate the shooting direction
     Vector3 shootDirection = (enemy.Player.transform.position - gunbarrel.transform.position).normalized;
-    
-    // Apply velocity to the bullet with a slight random deviation
-    bullet.GetComponent<Rigidbody>().velocity = Quaternion.AngleAxis(Random.Range(-3f, 3f), Vector3.up) * shootDirection * 40;
+
+    // Add a slight random deviation for more realistic shooting
+    shootDirection = Quaternion.Euler(Random.Range(-1f, 1f), Random.Range(-1f, 1f), 0) * shootDirection;
+
+    // Apply velocity to the bullet
+    Rigidbody bulletRigidbody = bullet.GetComponent<Rigidbody>();
+    bulletRigidbody.velocity = shootDirection * enemy.bulletSpeed;
 
     shotTimer = 0;
 }
-
 
     public override void Perform()
     {

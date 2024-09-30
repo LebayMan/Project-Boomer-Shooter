@@ -16,6 +16,8 @@ public class Enemy : MonoBehaviour
     public  GameObject Player { get => player;}
     [Header("Explosion Settings")]
     public Vector3 explosionOffset;
+    [Header("Bullet Settings")]
+    public float bulletSpeed = 40f;
     private float nextPlayTime = 0f;
     private StateMachine stateMachine;
     [Header("Patrol Time")]

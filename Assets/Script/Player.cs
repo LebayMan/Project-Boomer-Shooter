@@ -12,7 +12,8 @@ public class Player : MonoBehaviour
     [Header("Player Speeds && Mouse Sens")]
     public float moveSpeed = 5f;            // Normal movement speed
     public float sprintSpeed = 10f;         // Sprint speed
-    public float currentSpeed;              // Current movement speed
+    public float currentSpeed;      
+    public float crouchSpeed = 2.5f;         // Current movement speed
     public float mouseSensitivity = 100f; 
     public float mouseSensitivityScope = 60f; 
     public float mouseSensitivityNormal = 60f; 
@@ -20,6 +21,14 @@ public class Player : MonoBehaviour
     public float gravity = -9.81f;          // Gravity value
     public float jumpHeight = 2f;           // How high the player jumps
     public float landingRecoil = 1f;  
+    [Header("Crouch Settings")]
+    public float crouchHeight = 1f;         // CharacterController height when crouched
+    public float normalHeight = 2f;         // CharacterController height when standing
+    public bool isCrouching = false;  
+    public Transform headPosition;          // Reference to the head position
+    public float headCheckRadius = 0.3f;    // Radius for head collision check
+    public LayerMask headCollisionLayer;       // Is player currently crouching
+
 
     
 
@@ -72,12 +81,16 @@ private void OnEnable()
     playerInput.Main.Scope.performed += context => gunManager.Scope();
     playerInput.Main.Scope.Enable();
 
-            // Sprint
-        playerInput.Main.Sprint.performed += OnSprintPerformed;
-        playerInput.Main.Sprint.canceled += OnSprintCanceled;
-        playerInput.Main.Sprint.Enable();
+        // Sprint
+    playerInput.Main.Sprint.performed += OnSprintPerformed;
+    playerInput.Main.Sprint.canceled += OnSprintCanceled;
+    playerInput.Main.Sprint.Enable();
 
-        currentSpeed = moveSpeed;
+
+    playerInput.Main.Crouch.performed += OnCrouchPerformed;
+    playerInput.Main.Crouch.canceled += OnCrouchCanceled;
+    playerInput.Main.Crouch.Enable();
+    currentSpeed = moveSpeed;
 
 }
 
@@ -92,6 +105,7 @@ private void OnEnable()
         playerInput.Main.SwitchWeapon.Disable();
         playerInput.Main.Scope.Disable();
         playerInput.Main.Sprint.Disable();
+        playerInput.Main.Crouch.Disable();
     }
 
     // Called when movement keys are pressed
@@ -130,14 +144,40 @@ private void OnEnable()
     }
         private void OnSprintPerformed(InputAction.CallbackContext context)
     {
+        if(!isCrouching)
+        {
         isSprinting = true;
         currentSpeed = sprintSpeed; // Increase speed when sprinting
+        }
     }
 
     private void OnSprintCanceled(InputAction.CallbackContext context)
     {
-        isSprinting = false;
-        currentSpeed = moveSpeed; // Reset speed when not sprinting
+        if (!isCrouching)
+        {
+            currentSpeed = moveSpeed;
+        }
+    }
+    private void OnCrouchPerformed(InputAction.CallbackContext context)
+    {
+        isCrouching = true;
+        currentSpeed = crouchSpeed;
+        controller.height = crouchHeight; 
+    }
+    private void OnCrouchCanceled(InputAction.CallbackContext context)
+    {
+        if (!IsObstacleAbove())
+        {
+            isCrouching = false;
+            currentSpeed = moveSpeed;
+            controller.height = normalHeight; 
+        }
+    }
+
+    private bool IsObstacleAbove()
+    {
+        // Check if there's an obstacle above using Physics.CheckSphere
+        return Physics.CheckSphere(headPosition.position, headCheckRadius, headCollisionLayer);
     }
 
 
@@ -153,8 +193,15 @@ private void OnEnable()
             mouseSensitivity = mouseSensitivityNormal;
         }
 
+        if (isCrouching && !IsObstacleAbove() && !Keyboard.current.leftCtrlKey.isPressed)
+        {
+            isCrouching = false;
+            currentSpeed = moveSpeed;
+            controller.height = normalHeight;
+        }
         wasGrounded = isGrounded;
         isGrounded = controller.isGrounded;
+        
 
         if (isGrounded && !wasGrounded && hasJumped)
         {
