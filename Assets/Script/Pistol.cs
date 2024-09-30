@@ -17,6 +17,7 @@ public class Pistol : MonoBehaviour, IGun
     public float impactOffset = 0.01f;
     [Header("Damage")]
     public float Damage_Point = 10;
+    public float maxRayDistance = 100f;
     
     [Header("Ammo")]
     public float Ammo = 8;
@@ -26,43 +27,43 @@ public class Pistol : MonoBehaviour, IGun
     public Animator animator; // Reference to the Animator component
     public bool isReloading = false; // Flag to track if the gun is reloading
 
-    public void Shoot()
-    {
-        if (isReloading)
+public void Shoot()
+{
+    if (isReloading)
     {
         Debug.Log("Cannot shoot while reloading.");
         return;
     }
-        shootFrom = Camera.main.transform;
-        if (Ammo > 0)
+    shootFrom = Camera.main.transform;
+    if (Ammo > 0)
+    {
+        Ray ray = new Ray(shootFrom.position, shootFrom.forward);
+        RaycastHit hit;
+        
+        // Limit the raycast distance using maxRayDistance
+        if (Physics.Raycast(ray, out hit, maxRayDistance, obstacleLayer))
         {
-            Ray ray = new Ray(shootFrom.position, shootFrom.forward);
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity, obstacleLayer))
-            {
-                Debug.Log("Hit object: " + hit.collider.name);
-                Vector3 impactPosition = hit.point + hit.normal * impactOffset;
-                Instantiate(BulletImpact, impactPosition, Quaternion.LookRotation(hit.normal));
-                Ammo--;
-            }
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity, EnemyLayer))
-            {
+            Debug.Log("Hit object: " + hit.collider.name);
+            Vector3 impactPosition = hit.point + hit.normal * impactOffset;
+            Instantiate(BulletImpact, impactPosition, Quaternion.LookRotation(hit.normal));
+        }
+
+        if (Physics.Raycast(ray, out hit, maxRayDistance, EnemyLayer))
+        {
             Enemy enemyScript = hit.collider.GetComponent<Enemy>();
             if (enemyScript != null)
             {
                 enemyScript.Hit(Damage_Point);
             }
-            }
-            else
-            {
-            Ammo--;
-            }
         }
-        else
-        {
-            Debug.Log("Out of Ammo!");
-        }
+        
+        Ammo--;
     }
+    else
+    {
+        Debug.Log("Out of Ammo!");
+    }
+}
 
 public void Reload()
 {

@@ -39,6 +39,29 @@ public void Shoot()
 
     shotTimer = 0;
 }
+public void ShootBoss()
+{
+    Debug.Log("SHOOT");
+    Transform gunbarrel = enemy.gunBarrel;
+
+    // Instantiate the bullet
+    GameObject bullet = GameObject.Instantiate(Resources.Load("Prefabs/Bullet1") as GameObject, gunbarrel.position, enemy.transform.rotation);
+
+    // Adjust the bullet's rotation to be rotated 90 degrees
+    bullet.transform.rotation = Quaternion.Euler(bullet.transform.eulerAngles.x + 90, bullet.transform.eulerAngles.y, bullet.transform.eulerAngles.z);
+
+    // Calculate the shooting direction
+    Vector3 shootDirection = (enemy.Player.transform.position - gunbarrel.transform.position).normalized;
+
+    // Add a slight random deviation for more realistic shooting
+    shootDirection = Quaternion.Euler(Random.Range(-1f, 1f), Random.Range(-1f, 1f), 0) * shootDirection;
+
+    // Apply velocity to the bullet
+    Rigidbody bulletRigidbody = bullet.GetComponent<Rigidbody>();
+    bulletRigidbody.velocity = shootDirection * enemyBoss.bulletSpeed;
+
+    shotTimer = 0;
+}
 
     public override void Perform()
     {
