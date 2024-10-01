@@ -20,6 +20,7 @@ public class Shotgun : MonoBehaviour, IGun
     public float impactOffset = 0.01f;
     [Header("Damage")]
     public float Damage_Point = 10;
+    public float maxRayDistance = 100f;
     
     [Header("Ammo")]
     public float Ammo = 6; 
@@ -44,14 +45,14 @@ public void Shoot()
         Ray ray = new Ray(shootFrom.position, shootFrom.forward);
         RaycastHit hit;
         // Check for obstacles first
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity, obstacleLayer))
+        if (Physics.Raycast(ray, out hit, maxRayDistance, obstacleLayer))
         {
             Debug.Log("Hit object: " + hit.collider.name);
             Vector3 impactPosition = hit.point + hit.normal * impactOffset;
             Instantiate(BulletImpact, impactPosition, Quaternion.LookRotation(hit.normal));
         }
         // Check for enemies
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity, EnemyLayer))
+        if (Physics.Raycast(ray, out hit, maxRayDistance, EnemyLayer))
         {
             Enemy enemyScript = hit.collider.GetComponent<Enemy>();
             if (enemyScript != null)
