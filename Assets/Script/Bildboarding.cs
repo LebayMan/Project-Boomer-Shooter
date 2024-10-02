@@ -26,4 +26,4 @@ public class Billboarding : MonoBehaviour
             transform.rotation = Quaternion.Euler(0f, rotation.eulerAngles.y, 0f);
         }
     }
-}
+} 

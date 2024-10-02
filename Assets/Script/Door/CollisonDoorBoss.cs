@@ -7,6 +7,7 @@ public class CollisonDoorBoss : MonoBehaviour
     [Header("Reference")]
     public Animator doorAnimator; 
     public GameObject UI;
+    public GameObject Boss;
     private bool masuk;
 
 
@@ -20,6 +21,7 @@ public class CollisonDoorBoss : MonoBehaviour
         masuk = true;
         Debug.Log("pintu terbuka");
         UI.SetActive(true);
+        Boss.SetActive(true);
         }
     }
 

@@ -70,7 +70,6 @@ public void ShootBoss()
             losePlayerTimer = 0;
             moveTimer += Time.deltaTime;
             shotTimer += Time.deltaTime;
-            enemy.transform.LookAt(enemy.Player.transform);
             if(shotTimer > enemy.fireRate)
             {
                 Debug.Log("SHOOT1");

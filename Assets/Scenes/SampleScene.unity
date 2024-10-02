@@ -3011,6 +3011,7 @@ MonoBehaviour:
   BulletImpact: {fileID: 4885858133016305015, guid: fdecc24ce7b3ddf469048def51c52bd0, type: 3}
   impactOffset: 0.01
   Damage_Point: 50
+  maxRayDistance: 100
   Ammo: 2
   maxAmmo: 2
   animator: {fileID: 415442827}
@@ -5627,6 +5628,7 @@ MonoBehaviour:
   BulletImpact: {fileID: 4885858133016305015, guid: fdecc24ce7b3ddf469048def51c52bd0, type: 3}
   impactOffset: 0.01
   Damage_Point: 150
+  maxRayDistance: 100
   Ammo: 6
   maxAmmo: 6
   ammoInsertDelay: 0.5
@@ -5811,7 +5813,7 @@ MonoBehaviour:
   waitTimer: 0
   currentState: 
   path: {fileID: 313679468}
-  sightDistance: 50
+  sightDistance: 20
   fieldofview: 360
   eyeHeight: 0
   gunBarrel: {fileID: 180434750}
@@ -8616,7 +8618,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1220256182
 Transform:
   m_ObjectHideFlags: 0
@@ -11925,6 +11927,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   doorAnimator: {fileID: 1853858576}
   UI: {fileID: 1073453386}
+  Boss: {fileID: 1220256181}
 --- !u!1 &1786420065
 GameObject:
   m_ObjectHideFlags: 0
