@@ -1,141 +1,54 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
 
-public class Enemy : MonoBehaviour
+public class Sprite_Enemy : MonoBehaviour
 {
-    [Header("Enemy Info")]
-    public float Health;
-    public float MaxHealth = 100;
-
     [Header("References")]
-    public GameObject Explosion;
+
     public Animator animator;
-    public NavMeshAgent Agent { get => agent; }
-    public NavMeshAgent agent;
-
+    
     public GameObject Player { get => player; }
-    [Header("Explosion Settings")]
-    public Vector3 explosionOffset;
-    [Header("Bullet Settings")]
-    public float bulletSpeed = 40f;
-    private float nextPlayTime = 0f;
-    private StateMachine stateMachine;
-    [Header("Patrol Time")]
-    public float waitTimer;
-
-    [SerializeField]
-    private string currentState;
-    public Path path;
-    private GameObject player;
-
     [Header("Sight Values")]
     public float sightDistance = 20f;
     public float frontFieldOfView = 90f; // Field of view for the front detection
     public float rightFieldOfView = 90f; // Field of view for the right detection
     public float leftFieldOfView = 90f; // Field of view for the left detection
-    public float backFieldOfView = 90f; // Field of view for the back detection
+    public float backFieldOfView = 90f;
     public float eyeHeight;
-
-    [Header("Weapon Values")]
-    public Transform gunBarrel;
-    [Range(0.1f, 10f)]
-    public float fireRate;
-
     [Header("Detection Booleans")]
     public bool isPlayerInFront;
     public bool isPlayerToRight;
     public bool isPlayerToLeft;
     public bool isPlayerBehind;
-
-    private void Start()
+    private GameObject player;
+    // Start is called before the first frame update
+    void Start()
     {
-        stateMachine = GetComponent<StateMachine>();
-        stateMachine.Initialise();
-        Health = MaxHealth;
         player = GameObject.FindGameObjectWithTag("Player");
     }
 
-    public void Hit(float damage)
+    // Update is called once per frame
+    void Update()
     {
-        Health -= damage;
-        animator.Play("Hit", 0, 0f);
-        if (Health <= 0)
-        {
-            Die();
-        }
-    }
-
-    private void Update()
-    {
-        CanSeePlayer();
         DetectPlayerDirection();
-        currentState = stateMachine.activestate.ToString();
-
-        if (Health <= 0)
-        {
-            Die();
-        }
         if(isPlayerBehind)
         {
             animator.Play("Back", 0, 0f);
         }
         if(isPlayerToRight)
         {
-            animator.Play("Left", 0, 0f);
+            animator.Play("Right", 0, 0f);
         }
         if(isPlayerToLeft)
         {
-            animator.Play("Right", 0, 0f);
+            animator.Play("Left", 0, 0f);
         }
         if(isPlayerInFront)
         {
             animator.SetTrigger("Front");
         }
     }
-
-    private void Die()
-    {
-        if (Explosion != null)
-        {
-            Instantiate(Explosion, transform.position + explosionOffset, transform.rotation);
-        }
-
-        Destroy(gameObject);
-    }
-
-public bool CanSeePlayer()
-{
-    if (player != null)
-    {
-        Vector3 targetDirection = player.transform.position - transform.position - Vector3.up * eyeHeight;
-
-        if (Vector3.Distance(transform.position, player.transform.position) < sightDistance)
-        {
-            // Calculate the angle between the enemy's forward direction and the player
-            float angleToPlayer = Vector3.Angle(targetDirection, transform.forward);
-
-            // Only detect the player if they're within the front field of view
-            if (angleToPlayer >= -frontFieldOfView / 2 && angleToPlayer <= frontFieldOfView / 2)
-            {
-                Ray ray = new Ray(transform.position + Vector3.up * eyeHeight, targetDirection);
-                RaycastHit hitInfo;
-
-                // Perform a raycast to check if there's an obstruction between the enemy and the player
-                if (Physics.Raycast(ray, out hitInfo, sightDistance))
-                {
-                    if (hitInfo.transform.gameObject == player)
-                    {
-                        // Debug line to visualize the ray
-                        Debug.DrawRay(ray.origin, ray.direction * sightDistance, Color.red);
-                        return true; // Player detected within front field of view
-                    }
-                }
-            }
-        }
-    }
-    return false; // Player not detected
-}
-
     private void DetectPlayerDirection()
     {
         if (player != null)
