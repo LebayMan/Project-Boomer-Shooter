@@ -20,6 +20,9 @@ public class Enemy : MonoBehaviour
     public float bulletSpeed = 40f;
     private float nextPlayTime = 0f;
     private StateMachine stateMachine;
+    [Header("Shooting Range")]
+    public float shootingRange = 10f;
+    public float minimumRange =5f;
     [Header("Patrol Time")]
     public float waitTimer;
 
