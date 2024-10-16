@@ -50,7 +50,7 @@ public void Shoot()
 
         if (Physics.Raycast(ray, out hit, maxRayDistance, EnemyLayer))
         {
-            Enemy enemyScript = hit.collider.GetComponent<Enemy>();
+            CollisonEnemy enemyScript = hit.collider.GetComponent<CollisonEnemy>();
             if (enemyScript != null)
             {
                 enemyScript.Hit(Damage_Point);

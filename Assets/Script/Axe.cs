@@ -56,7 +56,7 @@ public class Axe : MonoBehaviour, IGun
         // Check for enemies
         if (Physics.Raycast(ray, out hit, swingRange, EnemyLayer))
         {
-            Enemy enemyScript = hit.collider.GetComponent<Enemy>();
+            CollisonEnemy enemyScript = hit.collider.GetComponent<CollisonEnemy>();
             if (enemyScript != null)
             {
                 enemyScript.Hit(Damage_Point);
