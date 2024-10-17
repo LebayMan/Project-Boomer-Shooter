@@ -5,38 +5,43 @@ using UnityEngine;
 public class StateMachine : MonoBehaviour
 {
     [Header("Reference")]
-    public BaseState activestate;
+    public BaseState activeState;
+    public Transform playerTransform; // Reference to the player's Transform
 
     public void Initialise()
     {
-        ChangeState(new AttackState());
-    }
-    void Start()
-    {
-
+        // Start the state machine with SearchState, tracking the player's live position
+        ChangeState(new SearchState(playerTransform)); // Start with SearchState, passing the player's live position
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if (activestate != null)
+        if (activeState != null)
         {
-            activestate.Perform();
+            activeState.Perform();
+        }
+
+        // Check if the current state is not AttackState, then go to SearchState
+        if (!(activeState is AttackState))
+        {
+            ChangeState(new SearchState(playerTransform));
         }
     }
-    public void ChangeState(BaseState newstate)
-    {
-        if(activestate != null)
-        {
-            activestate.Exit();
-        }
-        activestate = newstate;
 
-        if(activestate !=null)
+    public void ChangeState(BaseState newState)
+    {
+        if (activeState != null)
         {
-            activestate.statemachine = this;
-            activestate.enemy = GetComponent<Enemy>();
-            activestate.Enter();
+            activeState.Exit();
+        }
+
+        activeState = newState;
+
+        if (activeState != null)
+        {
+            activeState.statemachine = this;
+            activeState.enemy = GetComponent<Enemy>();
+            activeState.Enter();
         }
     }
 }

@@ -59,7 +59,7 @@ public class EnemyBoss : MonoBehaviour
 private void Update()
 {
     CanSeePlayer();
-    currentState = stateMachine.activestate.ToString();
+    currentState = stateMachine.activeState.ToString();
         if (Health <= 0)
         {
             Die();

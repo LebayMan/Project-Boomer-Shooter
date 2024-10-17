@@ -42,39 +42,50 @@ public void Shoot()
 }
 public override void Perform()
 {
-        losePlayerTimer = 0;
-        moveTimer += Time.deltaTime;
-        shotTimer += Time.deltaTime;
-
-        // Get the distance between the enemy and the player
-        float distanceToPlayer = Vector3.Distance(enemy.transform.position, enemy.Player.transform.position);
-
-        // Look at the player
-        enemy.transform.LookAt(enemy.Player.transform);
-
-        // Check if the enemy is within the desired shooting distance
-        if (distanceToPlayer > enemy.shootingRange)
+        if (enemy.CanSeePlayer())
         {
-            // Move closer to the player if the enemy is too far away
-            enemy.Agent.SetDestination(enemy.Player.transform.position);
-        }
-        else if (distanceToPlayer < enemy.minimumRange)
-        {
+            losePlayerTimer = 0;
+            moveTimer += Time.deltaTime;
+            shotTimer += Time.deltaTime;
+            float distanceToPlayer = Vector3.Distance(enemy.transform.position, enemy.Player.transform.position);
+            enemy.transform.LookAt(enemy.Player.transform);
+            //Vector3 directionToPlayer = (enemy.Player.transform.position - enemy.transform.position).normalized;
+            //Quaternion targetRotation = Quaternion.LookRotation(directionToPlayer);
+            //enemy.transform.rotation = Quaternion.RotateTowards(enemy.transform.rotation, targetRotation, enemy.turnSpeed * Time.deltaTime);
+
+            if (distanceToPlayer > enemy.shootingRange)
+            {
+                // Move closer to the player if the enemy is too far away
+                enemy.Agent.SetDestination(enemy.Player.transform.position);
+            }
+            else if (distanceToPlayer < enemy.minimumRange)
+            {
             // Move back to maintain minimum distance
             Vector3 directionAwayFromPlayer = (enemy.transform.position - enemy.Player.transform.position).normalized;
             Vector3 targetPosition = enemy.transform.position + directionAwayFromPlayer * enemy.minimumRange;
             enemy.Agent.SetDestination(targetPosition);
-        }
-        else
-        {
+            }
+            else
+            {
             // Stop moving when within shooting range
             enemy.Agent.SetDestination(enemy.transform.position);
-
-            // Shoot at the player only when within shooting range
-            if (shotTimer > enemy.fireRate)
-            {
-                Shoot();
+                // Shoot at the player only when within shooting range
+                if (shotTimer > enemy.fireRate)
+                {
+                    Shoot();
+                }
             }
         }
+    else
+    {
+        losePlayerTimer += Time.deltaTime;
+
+        // If the player has been out of sight for too long, change to SearchState
+        if (losePlayerTimer > enemy.timeToSearch)
+        {
+            // Switch to SearchState using the live player's position (playerTransform)
+            statemachine.ChangeState(new SearchState(statemachine.playerTransform));
+        }
+    }
     }
 }

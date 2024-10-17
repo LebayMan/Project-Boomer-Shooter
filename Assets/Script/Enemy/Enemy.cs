@@ -6,6 +6,8 @@ public class Enemy : MonoBehaviour
     [Header("Enemy Info")]
     public float Health;
     public float MaxHealth = 100;
+    public float turnSpeed = 0.1f;
+    public float timeToSearch = 1f;
 
     [Header("References")]
     public GameObject Explosion;
@@ -62,6 +64,7 @@ public class Enemy : MonoBehaviour
     {
         Health -= damage;
         animator.Play("Hit", 0, 0f);
+        stateMachine.ChangeState(new AttackState());
         if (Health <= 0)
         {
             Die();
@@ -72,7 +75,7 @@ public class Enemy : MonoBehaviour
     {
         CanSeePlayer();
         DetectPlayerDirection();
-        currentState = stateMachine.activestate.ToString();
+        currentState = stateMachine.activeState.ToString();
 
         if (Health <= 0)
         {
