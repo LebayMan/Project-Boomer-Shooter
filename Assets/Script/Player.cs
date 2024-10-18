@@ -63,7 +63,7 @@ private void OnEnable()
     playerInput.Main.Movement.Enable();
 
     // Mouse look
-    playerInput.Main.Aim.performed += OnLookPerformed;
+    playerInput.Main.Aim.started += OnLookPerformed;
     playerInput.Main.Aim.canceled += OnLookCanceled;
     playerInput.Main.Aim.Enable();
 
@@ -73,6 +73,10 @@ private void OnEnable()
 
     // Shooting
     playerInput.Main.Shooting.performed += context => gunManager.ShootGun();
+    playerInput.Main.Shooting.Enable();
+
+    playerInput.Main.Shooting.started += context => gunManager.StartShooting();
+    playerInput.Main.Shooting.canceled += context => gunManager.StopShooting();
     playerInput.Main.Shooting.Enable();
 
     // Reload

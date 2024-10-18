@@ -5,6 +5,7 @@ using UnityEngine;
 public class GunManager : MonoBehaviour
 {
     private IGun currentGun;
+    public bool isShooting = false;
 
     public void EquipGun(IGun newGun)
     {
@@ -18,7 +19,22 @@ public class GunManager : MonoBehaviour
             currentGun.Shoot();
         }
     }
+    public void StartShooting()
+    {
+        isShooting = true; // Start shooting when the button is pressed
+    }
 
+    public void StopShooting()
+    {
+        isShooting = false; // Stop shooting when the button is released
+    }
+    private void Update()
+    {
+        if (isShooting)
+        {
+            ShootGun();
+        }
+    }
     public void ReloadGun()
     {
         if (currentGun != null)
