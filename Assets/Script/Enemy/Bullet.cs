@@ -4,6 +4,13 @@ public class Bullets : MonoBehaviour
 {
     private Collider bulletCollider;
 
+    [SerializeField]
+    private int damageAmount = 10; // Damage amount set in the Inspector
+
+    // Public layer for obstacles
+    [SerializeField]
+    private LayerMask obstacleLayer; // Selectable in the Unity Inspector
+
     private void Start()
     {
         bulletCollider = GetComponent<Collider>();
@@ -13,7 +20,7 @@ public class Bullets : MonoBehaviour
     {
         Transform hitTransform = collision.transform;
 
-        // Check if the collided object has the "Player" tag
+        // Check if the collided object is the player
         if (collision.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
             Debug.Log("Hit Player");
@@ -22,16 +29,19 @@ public class Bullets : MonoBehaviour
             Health playerHealth = hitTransform.GetComponent<Health>();
             if (playerHealth != null)
             {
-                // Call the Damage method with the desired damage amount
-                playerHealth.UpdateHealth(-10); // Replace 10f with your desired damage amount
+                // Call the Damage method with the specified damage amount
+                playerHealth.UpdateHealth(-damageAmount); // Use the damage amount set in the Inspector
             }
 
             // Destroy the bullet after applying damage
             Destroy(gameObject);
         }
-        else
+        // Check if the collided object is an obstacle
+        else if (((1 << collision.gameObject.layer) & obstacleLayer) != 0)
         {
-            // If the bullet hits anything else, destroy it
+            Debug.Log("Hit Obstacle");
+
+            // Destroy the bullet when it hits an obstacle
             Destroy(gameObject);
         }
     }

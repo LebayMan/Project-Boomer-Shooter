@@ -14,6 +14,7 @@ public class Enemy : MonoBehaviour
     public Animator animator;
     public NavMeshAgent Agent { get => agent; }
     public NavMeshAgent agent;
+    public GameObject gameObject1;
 
     public GameObject Player { get => player; }
     [Header("Explosion Settings")]
@@ -52,13 +53,17 @@ public class Enemy : MonoBehaviour
     public bool isPlayerToLeft;
     public bool isPlayerBehind;
 
-    private void Start()
-    {
-        stateMachine = GetComponent<StateMachine>();
-        stateMachine.Initialise();
-        Health = MaxHealth;
-        player = GameObject.FindGameObjectWithTag("Player");
-    }
+private GameMaster gameMaster;
+
+private void Start()
+{
+    stateMachine = GetComponent<StateMachine>();
+    stateMachine.Initialise();
+    Health = MaxHealth;
+    player = GameObject.FindGameObjectWithTag("Player");
+    gameMaster = GameObject.FindGameObjectWithTag("GameMaster").GetComponent<GameMaster>();
+}
+
 
     public void Hit(float damage)
     {
@@ -67,6 +72,7 @@ public class Enemy : MonoBehaviour
         stateMachine.ChangeState(new AttackState());
         if (Health <= 0)
         {
+            gameMaster.EnemyAlive--;
             Die();
         }
     }
@@ -105,8 +111,7 @@ public class Enemy : MonoBehaviour
         {
             Instantiate(Explosion, transform.position + explosionOffset, transform.rotation);
         }
-
-        Destroy(gameObject);
+        Destroy(gameObject1);
     }
 
 public bool CanSeePlayer()
@@ -163,8 +168,6 @@ public bool CanSeePlayer()
             Debug.DrawRay(eyePosition, Quaternion.Euler(0, -frontFieldOfView / 2, 0) * transform.forward * sightDistance, Color.blue); // Left
             Debug.DrawRay(eyePosition, -transform.forward * sightDistance, Color.yellow); // Back
 
-            // Log the current direction for debugging
-            Debug.Log($"Player Direction: Front({isPlayerInFront}), Right({isPlayerToRight}), Left({isPlayerToLeft}), Back({isPlayerBehind})");
         }
     }
 

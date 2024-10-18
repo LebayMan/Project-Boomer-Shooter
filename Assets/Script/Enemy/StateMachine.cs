@@ -8,6 +8,19 @@ public class StateMachine : MonoBehaviour
     public BaseState activeState;
     public Transform playerTransform; // Reference to the player's Transform
 
+    private void Awake()
+    {
+        // Find the player object by tag (make sure your player has the "Player" tag)
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player != null)
+        {
+            playerTransform = player.transform;
+        }
+        else
+        {
+            Debug.LogError("Player object not found. Make sure it has the 'Player' tag.");
+        }
+    }
     public void Initialise()
     {
         // Start the state machine with SearchState, tracking the player's live position
