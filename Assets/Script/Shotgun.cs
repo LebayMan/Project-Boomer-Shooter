@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class Shotgun : MonoBehaviour, IGun
 {
+    [Header("Gun Settings")]
+    public bool Auto;
     [Header("Layer")]
     public LayerMask obstacleLayer;
     public LayerMask EnemyLayer;
@@ -133,5 +135,9 @@ private void FixedUpdate()
     {
         bool awdaw = false;
         return  awdaw;
+    }
+    public bool auto()
+    {
+        return Auto;
     }
 }

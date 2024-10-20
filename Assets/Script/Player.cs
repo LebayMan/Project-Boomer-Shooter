@@ -72,9 +72,6 @@ private void OnEnable()
     playerInput.Main.Jump.Enable();
 
     // Shooting
-    playerInput.Main.Shooting.performed += context => gunManager.ShootGun();
-    playerInput.Main.Shooting.Enable();
-
     playerInput.Main.Shooting.started += context => gunManager.StartShooting();
     playerInput.Main.Shooting.canceled += context => gunManager.StopShooting();
     playerInput.Main.Shooting.Enable();

@@ -8,5 +8,6 @@ public interface IGun
     float GetMaxAmmo();
     bool IsReloading();
     bool isScopeing1();
+    bool auto();
     void Scope();
 }

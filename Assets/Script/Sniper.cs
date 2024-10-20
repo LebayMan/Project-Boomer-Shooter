@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class Sniper : MonoBehaviour, IGun
 {
+    [Header("Gun Settings")]
+    public bool Auto;
     [Header("Layer")]
     public LayerMask obstacleLayer;
     public LayerMask EnemyLayer;
@@ -175,5 +177,9 @@ private IEnumerator ReloadCoroutine()
     public bool isScopeing1()
     {
         return isScopeing;
+    }
+    public bool auto()
+    {
+        return Auto;
     }
 }

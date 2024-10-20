@@ -3879,6 +3879,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a0b6160b8fda7c45b97908ce6a58652, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Auto: 0
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 1152
@@ -5617,6 +5618,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3abc91c4e2c1584ea4d2a8d4c5af81f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Auto: 1
   gunManager: {fileID: 644391913}
   obstacleLayer:
     serializedVersion: 2
@@ -6352,6 +6354,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db506f0acfbe3cb4c8e93d89255e6139, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Auto: 0
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 128
@@ -6854,6 +6857,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: beddf28a4f4c40f47b27e971de44e946, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Auto: 0
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 1152
@@ -8413,6 +8417,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ac69d08446690249ae35721c6464260, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Auto: 0
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 1152

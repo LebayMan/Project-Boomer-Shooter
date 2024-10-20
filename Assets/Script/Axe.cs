@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class Axe : MonoBehaviour, IGun
 {
+    [Header("Gun Settings")]
+    public bool Auto;
     [Header("Layer")]
     public LayerMask obstacleLayer;
     public LayerMask EnemyLayer;
@@ -104,5 +106,9 @@ public class Axe : MonoBehaviour, IGun
     public bool isScopeing1()
     {
         return false; // Axes don't scope, return false
+    }
+    public bool auto()
+    {
+        return Auto;
     }
 }

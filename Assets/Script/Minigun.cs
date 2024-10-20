@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Minigun : MonoBehaviour, IGun
 {
+    [Header("Gun Settings")]
+    public bool Auto;
     [Header("Ref")]
     public GunManager gunManager;
     [Header("Layer")]
@@ -184,5 +186,9 @@ public class Minigun : MonoBehaviour, IGun
     public bool isScopeing1()
     {
         return false;
+    }
+    public bool auto()
+    {
+        return Auto;
     }
 }

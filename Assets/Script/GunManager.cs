@@ -21,7 +21,14 @@ public class GunManager : MonoBehaviour
     }
     public void StartShooting()
     {
+        if(currentGun.auto())
+        {
         isShooting = true; // Start shooting when the button is pressed
+        }
+        else if(!currentGun.auto())
+        {
+        ShootGun();
+        }
     }
 
     public void StopShooting()
