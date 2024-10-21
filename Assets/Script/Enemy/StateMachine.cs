@@ -35,10 +35,10 @@ public class StateMachine : MonoBehaviour
         }
 
         // Check if the current state is not AttackState, then go to SearchState
-        if (!(activeState is AttackState))
-        {
-            ChangeState(new SearchState(playerTransform));
-        }
+        //if (!(activeState is AttackState))
+        //{
+        //    ChangeState(new SearchState(playerTransform));
+        //}
     }
 
     public void ChangeState(BaseState newState)

@@ -19,6 +19,7 @@ public class AttackState : BaseState
     }
 public void Shoot()
 {
+    
     Debug.Log("SHOOT");
     Transform gunbarrel = enemy.gunBarrel;
 
@@ -39,6 +40,7 @@ public void Shoot()
     bulletRigidbody.velocity = shootDirection * enemy.bulletSpeed;
 
     shotTimer = 0;
+
 }
 public override void Perform()
 {

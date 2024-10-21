@@ -52,6 +52,11 @@ public class Enemy : MonoBehaviour
     public bool isPlayerToRight;
     public bool isPlayerToLeft;
     public bool isPlayerBehind;
+    [Header("Stun Settings")]
+    public float stunDuration = 3f; // Public stun duration
+    public float StuntTime;
+    public bool Stunt;
+    
 
 private GameMaster gameMaster;
 
@@ -69,14 +74,21 @@ private void Start()
     {
         Health -= damage;
         animator.Play("Hit", 0, 0f);
-        stateMachine.ChangeState(new AttackState());
+        stateMachine.ChangeState(new StunState(this, stunDuration,damage,stateMachine.playerTransform));
+        Stunt = true;
         if (Health <= 0)
         {
             gameMaster.EnemyAlive--;
             Die();
         }
     }
-
+    private void FixedUpdate()
+    {
+            if(Stunt)
+            {
+                StuntTime += 1;
+            }
+    }
     private void Update()
     {
         CanSeePlayer();
@@ -116,7 +128,7 @@ private void Start()
 
 public bool CanSeePlayer()
 {
-    if (player != null)
+    if (player != null && !Stunt)
     {
         Vector3 targetDirection = player.transform.position - transform.position - Vector3.up * eyeHeight;
 
